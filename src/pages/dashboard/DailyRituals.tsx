@@ -95,6 +95,7 @@ const initialRituals: Ritual[] = [
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const DailyRituals = () => {
+  const { profile } = useAuth();
   const [rituals, setRituals] = useState<Ritual[]>(initialRituals);
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
 
