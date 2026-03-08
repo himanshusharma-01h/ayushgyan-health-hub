@@ -5,29 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePrakritiResult } from "@/hooks/usePrakritiResult";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
-  User, Edit, MapPin, Heart, Activity, Award,
-  Calendar, MessageCircle, ShoppingBag, Sparkles, LogOut
+  User, Edit, Heart, Activity, Award,
+  Calendar, MessageCircle, ShoppingBag, Sparkles, LogOut, Settings
 } from "lucide-react";
 
 const UserProfile = () => {
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { result: prakriti, loading: prakritiLoading } = usePrakritiResult();
 
   const [editOpen, setEditOpen] = useState(false);
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // Mock data for demonstration (would come from DB in production)
-  const prakritiType = "Vata-Pitta";
+  const prakritiType = prakriti?.primary_dosha || "Not assessed";
   const memberSince = user?.created_at ? new Date(user.created_at).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "–";
 
   const activityStats = [
