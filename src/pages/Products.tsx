@@ -1,305 +1,195 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { 
-  Search, 
-  Star, 
-  ShoppingCart,
-  Plus,
-  Minus,
-  Sparkles
+import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import {
+  Sparkles, ShieldCheck, Leaf, Heart, FlaskConical,
+  Bell, CheckCircle2, ArrowRight
 } from "lucide-react";
 
-const categories = [
-  { id: "all", name: "All", emoji: "🌿" },
-  { id: "supplements", name: "Supplements", emoji: "💊" },
-  { id: "oils", name: "Oils & Care", emoji: "🧴" },
-  { id: "equipment", name: "Wellness", emoji: "🧘" },
+const placeholderProducts = [
+  { emoji: "🌿", name: "Ashwagandha Capsules", category: "Supplements" },
+  { emoji: "🍯", name: "Chyawanprash Premium", category: "Supplements" },
+  { emoji: "🧴", name: "Kumkumadi Face Oil", category: "Oils & Care" },
+  { emoji: "💆", name: "Brahmi Hair Oil", category: "Oils & Care" },
+  { emoji: "🍵", name: "Triphala Churna", category: "Supplements" },
+  { emoji: "🧘", name: "Organic Yoga Mat", category: "Wellness" },
+  { emoji: "🫗", name: "Copper Water Bottle", category: "Wellness" },
+  { emoji: "🌰", name: "Sesame Massage Oil", category: "Oils & Care" },
 ];
 
-const products = [
-  {
-    id: 1, name: "Ashwagandha Capsules", category: "supplements",
-    price: 599, originalPrice: 799, rating: 4.8, reviews: 234, image: "🌿",
-    description: "Premium organic Ashwagandha for stress relief and vitality",
-    benefits: ["Reduces stress", "Boosts energy", "Improves sleep"],
-  },
-  {
-    id: 2, name: "Triphala Churna", category: "supplements",
-    price: 399, rating: 4.9, reviews: 456, image: "🍃",
-    description: "Classic Ayurvedic formula for digestive health",
-    benefits: ["Digestive support", "Detoxification", "Immunity boost"],
-  },
-  {
-    id: 3, name: "Chyawanprash", category: "supplements",
-    price: 449, originalPrice: 549, rating: 4.7, reviews: 189, image: "🍯",
-    description: "Traditional immunity booster with 40+ herbs",
-    benefits: ["Immunity", "Rejuvenation", "Energy"],
-  },
-  {
-    id: 4, name: "Panchakarma Oil", category: "oils",
-    price: 899, rating: 4.8, reviews: 167, image: "🧴",
-    description: "Premium herbal oil blend for therapeutic massage",
-    benefits: ["Relaxation", "Muscle relief", "Detox"],
-  },
-  {
-    id: 5, name: "Brahmi Hair Oil", category: "oils",
-    price: 349, rating: 4.6, reviews: 298, image: "💆",
-    description: "Ayurvedic hair oil for healthy, strong hair",
-    benefits: ["Hair growth", "Scalp health", "Anti-grey"],
-  },
-  {
-    id: 6, name: "Kumkumadi Face Oil", category: "oils",
-    price: 1299, originalPrice: 1599, rating: 4.9, reviews: 412, image: "✨",
-    description: "Luxurious saffron-based oil for radiant skin",
-    benefits: ["Brightening", "Anti-aging", "Glow"],
-  },
-  {
-    id: 7, name: "Copper Tongue Scraper", category: "equipment",
-    price: 249, rating: 4.7, reviews: 534, image: "🪥",
-    description: "Pure copper tongue cleaner for oral hygiene",
-    benefits: ["Oral detox", "Fresh breath", "Digestion"],
-  },
-  {
-    id: 8, name: "Copper Water Bottle", category: "equipment",
-    price: 799, rating: 4.8, reviews: 321, image: "🫗",
-    description: "Handcrafted pure copper bottle for healthy water",
-    benefits: ["Alkaline water", "Immunity", "Digestion"],
-  },
-  {
-    id: 9, name: "Neti Pot (Ceramic)", category: "equipment",
-    price: 449, rating: 4.5, reviews: 198, image: "🏺",
-    description: "Traditional nasal cleansing pot for respiratory health",
-    benefits: ["Sinus relief", "Breathing", "Allergy relief"],
-  },
-  {
-    id: 10, name: "Yoga Mat (Organic)", category: "equipment",
-    price: 1499, originalPrice: 1999, rating: 4.9, reviews: 267, image: "🧘",
-    description: "Eco-friendly yoga mat made from natural materials",
-    benefits: ["Non-slip", "Eco-friendly", "Comfortable"],
-  },
-  {
-    id: 11, name: "Brahmi Capsules", category: "supplements",
-    price: 549, rating: 4.7, reviews: 178, image: "🧠",
-    description: "Brain tonic for memory and cognitive function",
-    benefits: ["Memory boost", "Focus", "Mental clarity"],
-  },
-  {
-    id: 12, name: "Sesame Massage Oil", category: "oils",
-    price: 399, rating: 4.6, reviews: 234, image: "🌰",
-    description: "Warming sesame oil for Abhyanga self-massage",
-    benefits: ["Nourishing", "Warming", "Joint health"],
-  },
+const trustPoints = [
+  { icon: ShieldCheck, text: "Verified Ayurvedic Products" },
+  { icon: Heart, text: "Dosha-Based Recommendations" },
+  { icon: FlaskConical, text: "Quality Checked Herbs" },
+  { icon: Leaf, text: "Natural Wellness Solutions" },
 ];
 
 const Products = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [cart, setCart] = useState<{ [key: number]: number }>({});
+  const { toast } = useToast();
+  const { language } = useLanguage();
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
 
-  const filteredProducts = products.filter((product) => {
-    const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-  const addToCart = (productId: number) => {
-    setCart((prev) => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
-  };
-
-  const removeFromCart = (productId: number) => {
-    setCart((prev) => {
-      const newCart = { ...prev };
-      if (newCart[productId] > 1) newCart[productId]--;
-      else delete newCart[productId];
-      return newCart;
+  const handleNotify = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubmitted(true);
+    toast({
+      title: language === "hi" ? "सूचना सेट!" : "You're on the list!",
+      description: language === "hi"
+        ? "जब उत्पाद उपलब्ध होंगे तो हम आपको सूचित करेंगे।"
+        : "We'll notify you when products launch.",
     });
+    setEmail("");
   };
-
-  const cartTotal = Object.entries(cart).reduce((total, [productId, quantity]) => {
-    const product = products.find((p) => p.id === Number(productId));
-    return total + (product?.price || 0) * quantity;
-  }, 0);
-
-  const cartItemCount = Object.values(cart).reduce((a, b) => a + b, 0);
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
+
       <main className="pt-16">
-        {/* Hero Banner */}
-        <section className="bg-secondary/30 py-10 sm:py-16">
-          <div className="container mx-auto px-4 sm:px-6">
+        {/* Hero */}
+        <section className="relative py-16 sm:py-24 overflow-hidden">
+          <div className="absolute inset-0 bg-grid-pattern" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-glow opacity-40" />
+
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
             <div className="max-w-2xl mx-auto text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent border border-primary/10 mb-4">
-                <Sparkles className="w-3 h-3 text-primary" />
-                <span className="text-[10px] sm:text-xs font-medium text-accent-foreground uppercase tracking-wide">Authentic Ayurvedic</span>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent border border-primary/10 mb-6 animate-slide-up">
+                <Sparkles className="w-3.5 h-3.5 text-primary" />
+                <span className="text-xs font-medium text-accent-foreground uppercase tracking-wider">
+                  {language === "hi" ? "जल्द आ रहा है" : "Coming Soon"}
+                </span>
               </div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-foreground mb-3 tracking-tight">
-                Ayurvedic <span className="text-gradient-emerald">Products</span>
+
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-display font-bold text-foreground mb-4 tracking-tight animate-slide-up" style={{ animationDelay: "0.1s" }}>
+                {language === "hi" ? "आयुर्वेदिक " : "Ayurvedic "}
+                <span className="text-gradient-emerald">
+                  {language === "hi" ? "उत्पाद" : "Products"}
+                </span>
               </h1>
-              <p className="text-sm sm:text-base text-muted-foreground">
-                Verified supplements, oils, and wellness essentials for your health journey
+
+              <p className="text-base sm:text-lg text-muted-foreground max-w-lg mx-auto leading-relaxed animate-slide-up" style={{ animationDelay: "0.2s" }}>
+                {language === "hi"
+                  ? "विश्वसनीय आयुर्वेदिक उत्पाद जल्द ही यहाँ उपलब्ध होंगे। हमारी टीम आपके लिए प्रामाणिक जड़ी-बूटियाँ और वेलनेस उत्पाद सावधानीपूर्वक चुन रही है।"
+                  : "Trusted Ayurvedic products will be available here soon. Our team is carefully selecting authentic herbs and wellness products for you."}
               </p>
             </div>
           </div>
         </section>
 
-        <div className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
-          {/* Search & Filter */}
-          <div className="flex flex-col gap-4 mb-6 sm:mb-8">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input 
-                placeholder="Search products..." 
-                className="pl-10 rounded-xl h-11"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 scrollbar-hide">
-              {categories.map((category) => (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all ${
-                    selectedCategory === category.id
-                      ? "bg-primary text-primary-foreground shadow-soft"
-                      : "bg-card border border-border text-muted-foreground hover:border-primary/20"
-                  }`}
+        {/* Placeholder Product Grid */}
+        <section className="py-10 sm:py-16">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
+              {placeholderProducts.map((p, i) => (
+                <Card
+                  key={i}
+                  className="group relative overflow-hidden rounded-2xl border-border/60 animate-slide-up"
+                  style={{ animationDelay: `${i * 0.07}s` }}
                 >
-                  <span>{category.emoji}</span>
-                  {category.name}
-                </button>
+                  <CardContent className="p-0">
+                    {/* Blurred image area */}
+                    <div className="relative h-28 sm:h-40 bg-secondary/50 flex items-center justify-center">
+                      <span className="text-4xl sm:text-5xl opacity-30 blur-[2px] group-hover:opacity-40 transition-opacity">
+                        {p.emoji}
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-t from-card/80 to-transparent" />
+                      <Badge className="absolute top-2 right-2 bg-primary/80 text-primary-foreground text-[9px] sm:text-[10px] px-2">
+                        {language === "hi" ? "जल्द" : "Soon"}
+                      </Badge>
+                    </div>
+
+                    {/* Info skeleton */}
+                    <div className="p-3 sm:p-4 space-y-2">
+                      <p className="text-xs sm:text-sm font-semibold text-foreground/70 line-clamp-1">{p.name}</p>
+                      <div className="h-2 w-3/4 rounded-full bg-muted animate-pulse" />
+                      <div className="flex items-center justify-between pt-1">
+                        <div className="h-2.5 w-12 rounded-full bg-muted animate-pulse" />
+                        <div className="h-7 w-16 rounded-full bg-muted animate-pulse" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
+        </section>
 
-          {/* Cart Summary (sticky on mobile) */}
-          {cartItemCount > 0 && (
-            <div className="sticky top-16 z-40 mb-4 sm:mb-6">
-              <div className="bg-card/90 backdrop-blur-lg border border-primary/20 rounded-2xl p-3 sm:p-4 shadow-elevated flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
-                    <ShoppingCart className="w-4 h-4 text-primary" />
+        {/* Trust Indicators */}
+        <section className="py-12 sm:py-16 bg-secondary/30">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 max-w-4xl mx-auto">
+              {trustPoints.map((tp, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col items-center text-center gap-3 p-4 sm:p-6 rounded-2xl bg-card border border-border hover:border-primary/20 transition-colors animate-slide-up"
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <tp.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{cartItemCount} items</p>
-                    <p className="text-xs text-muted-foreground">in your cart</p>
-                  </div>
+                  <p className="text-xs sm:text-sm font-medium text-foreground leading-snug">{tp.text}</p>
                 </div>
-                <div className="text-right">
-                  <p className="text-lg font-display font-bold text-primary">₹{cartTotal}</p>
-                  <Button size="sm" className="rounded-full text-xs mt-1 h-7 px-3">
-                    Checkout
-                  </Button>
-                </div>
-              </div>
+              ))}
             </div>
-          )}
-
-          {/* Products Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-5">
-            {filteredProducts.map((product, index) => (
-              <Card 
-                key={product.id}
-                className="group border-border hover:border-primary/20 transition-all duration-300 hover:shadow-card hover:-translate-y-1 overflow-hidden rounded-2xl animate-slide-up"
-                style={{ animationDelay: `${index * 0.05}s` }}
-              >
-                <CardContent className="p-0">
-                  {/* Product Image */}
-                  <div className="relative h-28 sm:h-40 bg-secondary/50 flex items-center justify-center text-4xl sm:text-5xl group-hover:scale-105 transition-transform duration-300">
-                    {product.image}
-                    {product.originalPrice && (
-                      <Badge className="absolute top-2 right-2 bg-destructive text-[10px] sm:text-xs px-1.5 sm:px-2">
-                        {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-                      </Badge>
-                    )}
-                  </div>
-                  
-                  {/* Info */}
-                  <div className="p-3 sm:p-4">
-                    <h3 className="text-xs sm:text-sm font-semibold text-foreground mb-0.5 sm:mb-1 line-clamp-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground mb-2 line-clamp-2 hidden sm:block">
-                      {product.description}
-                    </p>
-
-                    {/* Benefits */}
-                    <div className="flex flex-wrap gap-1 mb-2 hidden sm:flex">
-                      {product.benefits.slice(0, 2).map((benefit) => (
-                        <Badge key={benefit} variant="secondary" className="text-[10px] px-1.5 py-0">
-                          {benefit}
-                        </Badge>
-                      ))}
-                    </div>
-                    
-                    {/* Rating */}
-                    <div className="flex items-center gap-1 mb-2">
-                      <Star className="w-3 h-3 fill-ayush-gold text-ayush-gold" />
-                      <span className="text-[10px] sm:text-xs font-medium text-foreground">{product.rating}</span>
-                      <span className="text-[10px] sm:text-xs text-muted-foreground">({product.reviews})</span>
-                    </div>
-
-                    {/* Price & Cart */}
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="min-w-0">
-                        <span className="text-sm sm:text-base font-bold text-foreground">₹{product.price}</span>
-                        {product.originalPrice && (
-                          <span className="text-[10px] sm:text-xs text-muted-foreground line-through ml-1">
-                            ₹{product.originalPrice}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {cart[product.id] ? (
-                        <div className="flex items-center gap-1.5">
-                          <button 
-                            className="w-6 sm:w-7 h-6 sm:h-7 rounded-lg border border-border flex items-center justify-center hover:bg-secondary transition-colors"
-                            onClick={() => removeFromCart(product.id)}
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="text-xs sm:text-sm font-medium w-5 text-center">{cart[product.id]}</span>
-                          <button 
-                            className="w-6 sm:w-7 h-6 sm:h-7 rounded-lg bg-primary text-primary-foreground flex items-center justify-center hover:opacity-90 transition-opacity"
-                            onClick={() => addToCart(product.id)}
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
-                        </div>
-                      ) : (
-                        <Button 
-                          size="sm" 
-                          className="rounded-full text-[10px] sm:text-xs h-7 sm:h-8 px-2.5 sm:px-3" 
-                          onClick={() => addToCart(product.id)}
-                        >
-                          <Plus className="w-3 h-3 mr-0.5 sm:mr-1" />
-                          <span className="hidden sm:inline">Add</span>
-                          <span className="sm:hidden">+</span>
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
           </div>
+        </section>
 
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-2xl mb-2">🔍</p>
-              <p className="text-sm text-muted-foreground">No products found matching your criteria.</p>
-            </div>
-          )}
-        </div>
+        {/* Notify Me */}
+        <section className="py-16 sm:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <Card className="max-w-lg mx-auto border-primary/10 shadow-card rounded-2xl overflow-hidden">
+              <CardContent className="p-6 sm:p-8 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
+                  <Bell className="w-7 h-7 text-primary" />
+                </div>
+
+                <h3 className="text-lg sm:text-xl font-display font-bold text-foreground mb-2">
+                  {language === "hi" ? "सबसे पहले जानें" : "Be the First to Know"}
+                </h3>
+                <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
+                  {language === "hi"
+                    ? "जब हमारे उत्पाद लॉन्च हों तो सूचना प्राप्त करें।"
+                    : "Get notified when our curated Ayurvedic marketplace goes live."}
+                </p>
+
+                {submitted ? (
+                  <div className="flex items-center justify-center gap-2 text-primary animate-fade-in">
+                    <CheckCircle2 className="w-5 h-5" />
+                    <span className="text-sm font-medium">
+                      {language === "hi" ? "आप सूची में हैं!" : "You're on the list!"}
+                    </span>
+                  </div>
+                ) : (
+                  <form onSubmit={handleNotify} className="flex gap-2 max-w-sm mx-auto">
+                    <Input
+                      type="email"
+                      placeholder={language === "hi" ? "आपका ईमेल" : "Your email"}
+                      className="rounded-xl h-11 text-sm"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                    <Button type="submit" className="rounded-xl h-11 px-5 shrink-0 gap-1.5">
+                      <Bell className="w-4 h-4" />
+                      <span className="hidden sm:inline">
+                        {language === "hi" ? "सूचित करें" : "Notify Me"}
+                      </span>
+                      <ArrowRight className="w-4 h-4 sm:hidden" />
+                    </Button>
+                  </form>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </section>
       </main>
 
       <Footer />
