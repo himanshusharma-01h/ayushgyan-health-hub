@@ -56,7 +56,7 @@ const UserProfile = () => {
         .from("profiles")
         .select("phone")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
       if (data?.phone) setPhone(data.phone);
     };
     fetchProfile();
