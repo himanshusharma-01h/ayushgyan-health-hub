@@ -64,6 +64,36 @@ export type Database = {
           },
         ]
       }
+      daily_ritual_logs: {
+        Row: {
+          completed_rituals: string[]
+          id: string
+          log_date: string
+          progress_percent: number
+          submitted_at: string
+          total_rituals: number
+          user_id: string
+        }
+        Insert: {
+          completed_rituals?: string[]
+          id?: string
+          log_date?: string
+          progress_percent?: number
+          submitted_at?: string
+          total_rituals?: number
+          user_id: string
+        }
+        Update: {
+          completed_rituals?: string[]
+          id?: string
+          log_date?: string
+          progress_percent?: number
+          submitted_at?: string
+          total_rituals?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       doctors: {
         Row: {
           avatar_url: string | null
