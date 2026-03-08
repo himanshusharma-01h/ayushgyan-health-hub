@@ -62,13 +62,16 @@ const UserProfile = () => {
   useEffect(() => {
     if (!user) return;
     const fetchAll = async () => {
-      // Phone
+      // Profile fields
       const { data: profileData } = await supabase
         .from("profiles")
-        .select("phone")
+        .select("phone, age, gender, health_goals")
         .eq("user_id", user.id)
         .maybeSingle();
       if (profileData?.phone) setPhone(profileData.phone);
+      if (profileData?.age) setAge(String(profileData.age));
+      if (profileData?.gender) setGender(profileData.gender);
+      if (profileData?.health_goals) setHealthGoals(profileData.health_goals as string[]);
 
       // Activity counts
       const [symptomRes, ordersRes, appointmentsRes, ritualsRes] = await Promise.all([
