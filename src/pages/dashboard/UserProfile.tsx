@@ -208,7 +208,7 @@ const UserProfile = () => {
                     <Edit className="w-4 h-4" /> Edit Profile
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
                   <DialogHeader><DialogTitle>Edit Profile</DialogTitle></DialogHeader>
                   <div className="space-y-4 pt-2">
                     <div className="space-y-2">
@@ -222,6 +222,44 @@ const UserProfile = () => {
                     <div className="space-y-2">
                       <Label htmlFor="edit-phone">Phone Number</Label>
                       <Input id="edit-phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 9876543210" className="rounded-xl h-11" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-age">Age</Label>
+                        <Input id="edit-age" type="number" value={age} onChange={(e) => setAge(e.target.value)} placeholder="25" className="rounded-xl h-11" min="1" max="120" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Gender</Label>
+                        <Select value={gender} onValueChange={setGender}>
+                          <SelectTrigger className="rounded-xl h-11">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Health Goals</Label>
+                      <div className="grid grid-cols-1 gap-2">
+                        {availableGoals.map((goal) => (
+                          <label key={goal} className="flex items-center gap-2 text-sm cursor-pointer p-2 rounded-lg hover:bg-secondary/50">
+                            <input
+                              type="checkbox"
+                              checked={healthGoals.includes(goal)}
+                              onChange={(e) => {
+                                if (e.target.checked) setHealthGoals(prev => [...prev, goal]);
+                                else setHealthGoals(prev => prev.filter(g => g !== goal));
+                              }}
+                              className="rounded"
+                            />
+                            {goal}
+                          </label>
+                        ))}
+                      </div>
                     </div>
                     <Button onClick={handleSave} className="w-full rounded-xl h-11" disabled={saving}>
                       {saving ? "Saving..." : "Save Changes"}
