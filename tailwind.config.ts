@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["'Source Sans 3'", "system-ui", "sans-serif"],
-        serif: ["'Playfair Display'", "Georgia", "serif"],
+        sans: ["'Inter'", "system-ui", "sans-serif"],
+        display: ["'Space Grotesk'", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -71,6 +71,7 @@ export default {
           sage: "hsl(var(--ayush-sage))",
           gold: "hsl(var(--ayush-gold))",
           sand: "hsl(var(--ayush-sand))",
+          mint: "hsl(var(--ayush-mint))",
         },
       },
       borderRadius: {

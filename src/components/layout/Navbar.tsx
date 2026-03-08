@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu, X } from "lucide-react";
+import { Sparkles, Menu, X } from "lucide-react";
 import { useState } from "react";
 import LanguageToggle from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -11,22 +11,22 @@ const Navbar = () => {
 
   const navLinks = [
     { name: t('nav.home'), href: "/" },
+    { name: "Features", href: "#features" },
     { name: t('nav.consultation'), href: "/chat" },
-    { name: t('nav.products'), href: "/products" },
-    { name: t('nav.doctors'), href: "#doctors" },
+    { name: "About", href: "#about" },
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Leaf className="w-5 h-5 text-primary-foreground" />
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+              <Sparkles className="w-4.5 h-4.5 text-primary-foreground" />
             </div>
-            <span className="text-xl font-serif font-semibold text-foreground">
-              AyushGyan
+            <span className="text-lg font-display font-bold text-foreground tracking-tight">
+              AyushGyaan AI
             </span>
           </Link>
 
@@ -36,7 +36,7 @@ const Navbar = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className="text-muted-foreground hover:text-primary transition-colors font-medium"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium"
               >
                 {link.name}
               </Link>
@@ -46,11 +46,14 @@ const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center gap-3">
             <LanguageToggle />
-            <Button variant="ghost" asChild>
+            <Button variant="ghost" size="sm" asChild>
               <Link to="/login">{t('nav.login')}</Link>
             </Button>
-            <Button asChild>
-              <Link to="/login">{t('nav.getStarted')}</Link>
+            <Button size="sm" className="rounded-full px-5" asChild>
+              <Link to="/chat">
+                <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                Ask AI Now
+              </Link>
             </Button>
           </div>
 
@@ -60,34 +63,37 @@ const Navbar = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           >
             {mobileMenuOpen ? (
-              <X className="w-6 h-6 text-foreground" />
+              <X className="w-5 h-5 text-foreground" />
             ) : (
-              <Menu className="w-6 h-6 text-foreground" />
+              <Menu className="w-5 h-5 text-foreground" />
             )}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-border animate-fade-in">
-            <div className="flex flex-col gap-4">
+          <div className="md:hidden py-4 border-t border-border/50 animate-fade-in">
+            <div className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   to={link.href}
-                  className="text-muted-foreground hover:text-primary transition-colors font-medium py-2"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors font-medium py-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.name}
                 </Link>
               ))}
-              <div className="flex flex-col gap-2 pt-4 border-t border-border">
+              <div className="flex flex-col gap-2 pt-4 border-t border-border/50">
                 <LanguageToggle />
-                <Button variant="ghost" asChild className="justify-start">
+                <Button variant="ghost" size="sm" asChild className="justify-start">
                   <Link to="/login">{t('nav.login')}</Link>
                 </Button>
-                <Button asChild>
-                  <Link to="/login">{t('nav.getStarted')}</Link>
+                <Button size="sm" className="rounded-full" asChild>
+                  <Link to="/chat">
+                    <Sparkles className="w-3.5 h-3.5 mr-1.5" />
+                    Ask AI Now
+                  </Link>
                 </Button>
               </div>
             </div>
