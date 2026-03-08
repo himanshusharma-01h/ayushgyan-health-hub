@@ -16,16 +16,16 @@ export function usePrakritiResult() {
 
   useEffect(() => {
     if (!user) { setLoading(false); return; }
-    const fetch = async () => {
+    const fetchData = async () => {
       const { data } = await supabase
         .from("prakriti_results")
         .select("vata_score, pitta_score, kapha_score, primary_dosha")
         .eq("user_id", user.id)
-        .single();
+        .maybeSingle();
       setResult(data);
       setLoading(false);
     };
-    fetch();
+    fetchData();
   }, [user]);
 
   const save = async (vata: number, pitta: number, kapha: number, primaryDosha: string) => {
