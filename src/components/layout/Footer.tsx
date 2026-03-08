@@ -33,9 +33,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-2 sm:col-span-2 lg:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-3 sm:mb-4">
-              <div className="w-8 h-8 rounded-xl bg-primary flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-primary-foreground" />
-              </div>
+              <img src={logo} alt="AyushGyaan Logo" className="w-8 h-8 rounded-xl object-cover" />
               <span className="text-sm sm:text-base font-display font-bold text-foreground">
                 AyushGyaan AI
               </span>
