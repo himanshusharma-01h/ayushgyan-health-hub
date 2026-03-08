@@ -115,7 +115,7 @@ const DailyRituals = () => {
 
   return (
     <DashboardLayout 
-      userName="Priya Sharma" 
+      userName={profile?.full_name || "User"} 
       userPrakriti="Vata-Pitta"
       pageTitle="Daily Rituals (Dinacharya)"
     >

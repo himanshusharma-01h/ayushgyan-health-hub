@@ -128,7 +128,7 @@ const PrakritiQuiz = () => {
   const question = questions[currentQuestion];
 
   return (
-    <DashboardLayout userName="Priya Sharma" pageTitle={t('prakriti.pageTitle')}>
+    <DashboardLayout userName={profile?.full_name || "User"} pageTitle={t('prakriti.pageTitle')}>
       <div className="max-w-3xl mx-auto">
         <div className="mb-6 sm:mb-8">
           <div className="flex justify-between items-center mb-2">

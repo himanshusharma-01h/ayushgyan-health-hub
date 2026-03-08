@@ -72,7 +72,7 @@ const PatientDashboard = () => {
       {/* Welcome Section */}
       <div className="mb-8">
         <h2 className="text-2xl font-serif font-bold text-foreground mb-2">
-          Namaste, {mockPatientData.name.split(" ")[0]}! 🙏
+          Namaste, {userName.split(" ")[0]}! 🙏
         </h2>
         <p className="text-muted-foreground">
           Continue your Ayurvedic wellness journey. Today's ritual progress: {ritualsProgress}%

@@ -280,7 +280,7 @@ const SymptomsChecker = () => {
   const remedies = dominantDosha ? remedyDatabase[dominantDosha] : null;
 
   return (
-    <DashboardLayout userName="Patient">
+    <DashboardLayout userName={profile?.full_name || "User"} userPrakriti="Vata-Pitta" pageTitle="Symptoms Checker">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">Symptoms Checker</h1>

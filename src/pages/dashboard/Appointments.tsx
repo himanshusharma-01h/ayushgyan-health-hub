@@ -179,7 +179,7 @@ const Appointments = () => {
 
   return (
     <DashboardLayout 
-      userName="Priya Sharma" 
+      userName={profile?.full_name || "User"} 
       userPrakriti="Vata-Pitta"
       pageTitle={t('payment.bookAppointment')}
     >
