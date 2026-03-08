@@ -25,9 +25,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-14 sm:h-16">
           <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-8 sm:w-9 h-8 sm:h-9 rounded-xl bg-primary flex items-center justify-center group-hover:scale-105 transition-transform">
-              <Sparkles className="w-4 h-4 text-primary-foreground" />
-            </div>
+            <img src={logo} alt="AyushGyaan Logo" className="w-8 sm:w-9 h-8 sm:h-9 rounded-xl object-cover group-hover:scale-105 transition-transform" />
             <span className="text-base sm:text-lg font-display font-bold text-foreground tracking-tight">
               AyushGyaan
             </span>
