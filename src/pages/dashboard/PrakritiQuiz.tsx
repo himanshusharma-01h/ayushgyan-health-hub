@@ -73,7 +73,7 @@ const PrakritiQuiz = () => {
     const primaryDosha = getPrimaryDosha();
 
     return (
-      <DashboardLayout userName="Priya Sharma" userPrakriti={primaryDosha} pageTitle={t('prakriti.resultsTitle')}>
+      <DashboardLayout userName={profile?.full_name || "User"} userPrakriti={primaryDosha} pageTitle={t('prakriti.resultsTitle')}>
         <div className="max-w-3xl mx-auto">
           <Card className="overflow-hidden rounded-2xl">
             <div className="bg-gradient-to-r from-primary/20 via-accent/20 to-ayush-gold/20 p-6 sm:p-8 text-center">
