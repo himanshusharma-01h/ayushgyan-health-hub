@@ -13,7 +13,7 @@ const Footer = () => {
       { name: "About Us", href: "#" },
       { name: "Careers", href: "#" },
       { name: "Blog", href: "#" },
-      { name: "Contact", href: "#" },
+      { name: "Contact: 9672095978", href: "tel:9672095978" },
     ],
     Support: [
       { name: "Help Center", href: "#" },
