@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Sparkles, ShieldCheck, Leaf, Heart, FlaskConical,
-  Bell, CheckCircle2, ArrowRight
+  Bell, CheckCircle2, ArrowRight, ArrowLeft
 } from "lucide-react";
 
 const placeholderProducts = [
