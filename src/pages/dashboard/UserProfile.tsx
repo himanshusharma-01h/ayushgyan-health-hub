@@ -43,11 +43,15 @@ const UserProfile = () => {
   const prakritiType = prakriti?.primary_dosha || "Not assessed";
   const memberSince = user?.created_at ? new Date(user.created_at).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "–";
 
-  const healthGoals = [
+  const availableGoals = [
     "Improve digestion",
     "Better sleep quality",
     "Reduce stress & anxiety",
     "Build daily ritual habit",
+    "Weight management",
+    "Boost immunity",
+    "Improve skin health",
+    "Increase energy levels",
   ];
 
   useEffect(() => {
