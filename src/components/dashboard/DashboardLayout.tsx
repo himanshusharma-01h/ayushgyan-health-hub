@@ -28,6 +28,7 @@ const DashboardLayout = ({
   userPrakriti,
   pageTitle,
 }: DashboardLayoutProps) => {
+  const navigate = useNavigate();
   const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
