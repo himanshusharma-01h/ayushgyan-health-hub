@@ -66,6 +66,7 @@ const Appointments = () => {
 
   const { initiatePayment, isLoading: paymentLoading } = useRazorpay();
   const { t } = useLanguage();
+  const { profile } = useAuth();
 
   useEffect(() => {
     fetchDoctors();
