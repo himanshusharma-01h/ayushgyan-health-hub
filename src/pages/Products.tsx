@@ -37,17 +37,29 @@ const Products = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
-  const handleNotify = (e: React.FormEvent) => {
+  const handleNotify = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.trim()) return;
-    setSubmitted(true);
-    toast({
-      title: language === "hi" ? "सूचना सेट!" : "You're on the list!",
-      description: language === "hi"
-        ? "जब उत्पाद उपलब्ध होंगे तो हम आपको सूचित करेंगे।"
-        : "We'll notify you when products launch.",
-    });
-    setEmail("");
+
+    try {
+      const { error } = await supabase.from("notify_subscribers").insert({ email: email.trim() } as any);
+      if (error) {
+        if (error.code === "23505") {
+          toast({ title: language === "hi" ? "पहले से पंजीकृत" : "Already registered", description: language === "hi" ? "यह ईमेल पहले से सूची में है।" : "This email is already on the list." });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: language === "hi" ? "सूचना सेट!" : "You're on the list!",
+          description: language === "hi" ? "जब उत्पाद उपलब्ध होंगे तो हम आपको सूचित करेंगे।" : "We'll notify you when products launch.",
+        });
+      }
+      setSubmitted(true);
+      setEmail("");
+    } catch (err: any) {
+      toast({ title: "Error", description: err.message, variant: "destructive" });
+    }
   };
 
   return (
