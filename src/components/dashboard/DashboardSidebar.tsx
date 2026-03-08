@@ -12,6 +12,7 @@ import {
   User,
   Settings,
   LogOut,
+  MessageSquareHeart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -23,6 +24,7 @@ const navItems = [
   { icon: Sun, label: "Daily Rituals", path: "/dashboard/patient/rituals" },
   { icon: ShoppingBag, label: "Products", path: "/products" },
   { icon: Calendar, label: "Appointments", path: "/dashboard/patient/appointments" },
+  { icon: MessageSquareHeart, label: "Feedback", path: "/dashboard/patient/feedback" },
 ];
 
 interface DashboardSidebarProps {
