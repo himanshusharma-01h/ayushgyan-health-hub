@@ -24,6 +24,7 @@ const AdminDashboard = () => {
     { icon: FileText, label: "Vaidya Advice", href: "/admin/advice" },
     { icon: Users, label: "Users", href: "/admin/users" },
     { icon: ShieldCheck, label: "Doctors", href: "/admin/doctors" },
+    { icon: Bell, label: "Subscribers", href: "/admin/subscribers" },
   ];
 
   const stats = [
