@@ -104,7 +104,13 @@ const UserProfile = () => {
     setSaving(true);
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: fullName, phone })
+      .update({ 
+        full_name: fullName, 
+        phone,
+        age: age ? parseInt(age) : null,
+        gender: gender || null,
+        health_goals: healthGoals,
+      } as any)
       .eq("user_id", user.id);
 
     if (error) {
