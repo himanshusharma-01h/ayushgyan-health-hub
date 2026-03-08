@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard, Package, FileText, Users, ShieldCheck, LogOut,
-  Menu, X, ChevronRight, Sparkles
+  Menu, X, ChevronRight, Sparkles, Bell
 } from "lucide-react";
 
 const AdminDashboard = () => {
