@@ -5,14 +5,16 @@ import {
   Leaf,
   ClipboardList,
   MessageCircle,
+  Stethoscope,
   User,
 } from "lucide-react";
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/dashboard/patient" },
+  { icon: LayoutDashboard, label: "Home", path: "/dashboard/patient" },
   { icon: ClipboardList, label: "Prakriti", path: "/dashboard/patient/prakriti" },
   { icon: Leaf, label: "Symptoms", path: "/dashboard/patient/symptoms" },
   { icon: MessageCircle, label: "AI Vaidya", path: "/chat" },
+  { icon: Stethoscope, label: "Doctors", path: "/dashboard/patient/doctors" },
   { icon: User, label: "Profile", path: "/dashboard/patient/profile" },
 ];
 
@@ -29,7 +31,7 @@ const MobileBottomNav = () => {
               key={item.path}
               to={item.path}
               className={cn(
-                "flex flex-col items-center justify-center gap-0.5 flex-1 py-2 rounded-lg transition-colors",
+                "flex flex-col items-center justify-center gap-0.5 flex-1 py-2 rounded-lg transition-colors relative",
                 isActive
                   ? "text-primary"
                   : "text-muted-foreground"
@@ -37,7 +39,7 @@ const MobileBottomNav = () => {
             >
               <item.icon className={cn("w-5 h-5", isActive && "drop-shadow-sm")} />
               <span className={cn(
-                "text-[10px] leading-tight",
+                "text-[9px] leading-tight",
                 isActive ? "font-semibold" : "font-medium"
               )}>
                 {item.label}
