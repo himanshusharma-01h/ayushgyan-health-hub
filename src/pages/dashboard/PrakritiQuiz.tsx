@@ -17,6 +17,8 @@ const PrakritiQuiz = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
   const { profile } = useAuth();
+  const { save: savePrakriti } = usePrakritiResult();
+  const { toast } = useToast();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, DoshaType>>({});
   const [showResults, setShowResults] = useState(false);
