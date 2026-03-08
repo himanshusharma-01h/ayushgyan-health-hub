@@ -1,8 +1,20 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Bot, Leaf, Zap } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const HeroSection = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  const handleProtectedAction = (path: string) => {
+    if (user) {
+      navigate(path);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <section className="relative min-h-[100svh] flex items-center justify-center pt-16 overflow-hidden">
       {/* Grid pattern */}
@@ -43,18 +55,14 @@ const HeroSection = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center px-4 sm:px-0 animate-slide-up" style={{ animationDelay: "0.3s" }}>
-            <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 rounded-full shadow-elevated w-full sm:w-auto" asChild>
-              <Link to="/chat">
-                <Sparkles className="w-4 h-4 mr-2" />
-                Ask AI Now
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
+            <Button size="lg" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 rounded-full shadow-elevated w-full sm:w-auto" onClick={() => handleProtectedAction("/chat")}>
+              <Sparkles className="w-4 h-4 mr-2" />
+              Ask AI Now
+              <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
-            <Button size="lg" variant="outline" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 rounded-full border-primary/20 hover:bg-accent w-full sm:w-auto" asChild>
-              <Link to="/dashboard/patient/prakriti">
-                <Leaf className="w-4 h-4 mr-2" />
-                Take Prakriti Test
-              </Link>
+            <Button size="lg" variant="outline" className="text-sm sm:text-base px-6 sm:px-8 py-5 sm:py-6 rounded-full border-primary/20 hover:bg-accent w-full sm:w-auto" onClick={() => handleProtectedAction("/dashboard/patient/prakriti")}>
+              <Leaf className="w-4 h-4 mr-2" />
+              Take Prakriti Test
             </Button>
           </div>
 

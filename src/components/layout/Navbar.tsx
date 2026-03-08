@@ -64,6 +64,9 @@ const Navbar = () => {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/login">{t('nav.login')}</Link>
                 </Button>
+                <Button size="sm" variant="outline" className="rounded-full px-4" asChild>
+                  <Link to="/login?tab=signup">Sign Up</Link>
+                </Button>
                 <Button size="sm" className="rounded-full px-4 sm:px-5" asChild>
                   <Link to="/chat">
                     <Sparkles className="w-3.5 h-3.5 mr-1.5" />
@@ -119,6 +122,9 @@ const Navbar = () => {
                   <>
                     <Button variant="ghost" size="sm" asChild className="justify-start rounded-xl">
                       <Link to="/login" onClick={() => setMobileMenuOpen(false)}>{t('nav.login')}</Link>
+                    </Button>
+                    <Button variant="outline" size="sm" asChild className="justify-start rounded-xl">
+                      <Link to="/login?tab=signup" onClick={() => setMobileMenuOpen(false)}>Sign Up</Link>
                     </Button>
                     <Button size="sm" className="rounded-full" asChild>
                       <Link to="/chat" onClick={() => setMobileMenuOpen(false)}>
