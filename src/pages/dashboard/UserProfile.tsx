@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
 import { usePrakritiResult } from "@/hooks/usePrakritiResult";
@@ -25,6 +26,9 @@ const UserProfile = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [phone, setPhone] = useState("");
+  const [age, setAge] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [healthGoals, setHealthGoals] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
   // Activity counts
@@ -39,11 +43,15 @@ const UserProfile = () => {
   const prakritiType = prakriti?.primary_dosha || "Not assessed";
   const memberSince = user?.created_at ? new Date(user.created_at).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "–";
 
-  const healthGoals = [
+  const availableGoals = [
     "Improve digestion",
     "Better sleep quality",
     "Reduce stress & anxiety",
     "Build daily ritual habit",
+    "Weight management",
+    "Boost immunity",
+    "Improve skin health",
+    "Increase energy levels",
   ];
 
   useEffect(() => {
@@ -54,13 +62,16 @@ const UserProfile = () => {
   useEffect(() => {
     if (!user) return;
     const fetchAll = async () => {
-      // Phone
+      // Profile fields
       const { data: profileData } = await supabase
         .from("profiles")
-        .select("phone")
+        .select("phone, age, gender, health_goals")
         .eq("user_id", user.id)
         .maybeSingle();
       if (profileData?.phone) setPhone(profileData.phone);
+      if (profileData?.age) setAge(String(profileData.age));
+      if (profileData?.gender) setGender(profileData.gender);
+      if (profileData?.health_goals) setHealthGoals(profileData.health_goals as string[]);
 
       // Activity counts
       const [symptomRes, ordersRes, appointmentsRes, ritualsRes] = await Promise.all([
@@ -93,7 +104,13 @@ const UserProfile = () => {
     setSaving(true);
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: fullName, phone })
+      .update({ 
+        full_name: fullName, 
+        phone,
+        age: age ? parseInt(age) : null,
+        gender: gender || null,
+        health_goals: healthGoals,
+      } as any)
       .eq("user_id", user.id);
 
     if (error) {
@@ -191,7 +208,7 @@ const UserProfile = () => {
                     <Edit className="w-4 h-4" /> Edit Profile
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
+                <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
                   <DialogHeader><DialogTitle>Edit Profile</DialogTitle></DialogHeader>
                   <div className="space-y-4 pt-2">
                     <div className="space-y-2">
@@ -205,6 +222,44 @@ const UserProfile = () => {
                     <div className="space-y-2">
                       <Label htmlFor="edit-phone">Phone Number</Label>
                       <Input id="edit-phone" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+91 9876543210" className="rounded-xl h-11" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <Label htmlFor="edit-age">Age</Label>
+                        <Input id="edit-age" type="number" value={age} onChange={(e) => setAge(e.target.value)} placeholder="25" className="rounded-xl h-11" min="1" max="120" />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Gender</Label>
+                        <Select value={gender} onValueChange={setGender}>
+                          <SelectTrigger className="rounded-xl h-11">
+                            <SelectValue placeholder="Select" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="male">Male</SelectItem>
+                            <SelectItem value="female">Female</SelectItem>
+                            <SelectItem value="other">Other</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Health Goals</Label>
+                      <div className="grid grid-cols-1 gap-2">
+                        {availableGoals.map((goal) => (
+                          <label key={goal} className="flex items-center gap-2 text-sm cursor-pointer p-2 rounded-lg hover:bg-secondary/50">
+                            <input
+                              type="checkbox"
+                              checked={healthGoals.includes(goal)}
+                              onChange={(e) => {
+                                if (e.target.checked) setHealthGoals(prev => [...prev, goal]);
+                                else setHealthGoals(prev => prev.filter(g => g !== goal));
+                              }}
+                              className="rounded"
+                            />
+                            {goal}
+                          </label>
+                        ))}
+                      </div>
                     </div>
                     <Button onClick={handleSave} className="w-full rounded-xl h-11" disabled={saving}>
                       {saving ? "Saving..." : "Save Changes"}
@@ -241,6 +296,14 @@ const UserProfile = () => {
               <div className="flex justify-between items-center py-2 border-b border-border">
                 <span className="text-sm text-muted-foreground">Phone</span>
                 <span className="text-sm font-medium text-foreground">{phone || "Not set"}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm text-muted-foreground">Age</span>
+                <span className="text-sm font-medium text-foreground">{age || "Not set"}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm text-muted-foreground">Gender</span>
+                <span className="text-sm font-medium text-foreground capitalize">{gender || "Not set"}</span>
               </div>
               <div className="flex justify-between items-center py-2">
                 <span className="text-sm text-muted-foreground">Member Since</span>
@@ -366,16 +429,20 @@ const UserProfile = () => {
               <CardTitle className="text-lg flex items-center gap-2"><Heart className="w-5 h-5 text-primary" /> Health Goals</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {healthGoals.map((goal, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm">🎯</span>
+              {healthGoals.length > 0 ? (
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {healthGoals.map((goal, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-sm">🎯</span>
+                      </div>
+                      <span className="text-sm font-medium text-foreground">{goal}</span>
                     </div>
-                    <span className="text-sm font-medium text-foreground">{goal}</span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">No health goals set yet. Edit your profile to add goals!</p>
+              )}
             </CardContent>
           </Card>
         </div>
