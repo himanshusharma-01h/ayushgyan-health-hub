@@ -82,10 +82,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-3">
           <p className="text-[10px] sm:text-xs text-muted-foreground">
-            © {new Date().getFullYear()} AyushGyaan AI. All rights reserved.
-          </p>
-          <p className="text-[10px] sm:text-xs text-muted-foreground">
-            Made with 🌿 for holistic health
+            © {new Date().getFullYear()} AyushGyaan – AI Powered Ayurvedic Wellness Platform
           </p>
         </div>
       </div>
