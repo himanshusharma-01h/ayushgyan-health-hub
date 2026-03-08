@@ -86,7 +86,7 @@ const translations: Translations = {
 
   // Chat
   'chat.title': { en: 'AI Vaidya', hi: 'एआई वैद्य' },
-  'chat.subtitle': { en: 'Powered by Lovable AI', hi: 'Lovable AI द्वारा संचालित' },
+  'chat.subtitle': { en: 'AI Powered Ayurvedic Guidance', hi: 'एआई संचालित आयुर्वेदिक मार्गदर्शन' },
   'chat.newConsultation': { en: 'New Consultation', hi: 'नई परामर्श' },
   'chat.recentChats': { en: 'Recent Chats', hi: 'हालिया चैट' },
   'chat.backToDashboard': { en: 'Back to Dashboard', hi: 'डैशबोर्ड पर वापस' },
