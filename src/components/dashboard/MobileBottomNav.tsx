@@ -5,7 +5,7 @@ import {
   Leaf,
   ClipboardList,
   MessageCircle,
-  ShoppingBag,
+  User,
 } from "lucide-react";
 
 const navItems = [
@@ -13,7 +13,7 @@ const navItems = [
   { icon: ClipboardList, label: "Prakriti", path: "/dashboard/patient/prakriti" },
   { icon: Leaf, label: "Symptoms", path: "/dashboard/patient/symptoms" },
   { icon: MessageCircle, label: "AI Vaidya", path: "/chat" },
-  { icon: ShoppingBag, label: "Products", path: "/products" },
+  { icon: User, label: "Profile", path: "/dashboard/patient/profile" },
 ];
 
 const MobileBottomNav = () => {
