@@ -297,6 +297,14 @@ const UserProfile = () => {
                 <span className="text-sm text-muted-foreground">Phone</span>
                 <span className="text-sm font-medium text-foreground">{phone || "Not set"}</span>
               </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm text-muted-foreground">Age</span>
+                <span className="text-sm font-medium text-foreground">{age || "Not set"}</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-border">
+                <span className="text-sm text-muted-foreground">Gender</span>
+                <span className="text-sm font-medium text-foreground capitalize">{gender || "Not set"}</span>
+              </div>
               <div className="flex justify-between items-center py-2">
                 <span className="text-sm text-muted-foreground">Member Since</span>
                 <span className="text-sm font-medium text-foreground">{memberSince}</span>
