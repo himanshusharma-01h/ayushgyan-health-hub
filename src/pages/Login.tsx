@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Leaf, User, Stethoscope, Mail, Lock, Eye, EyeOff } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Sparkles, User, Stethoscope, Mail, Lock, Eye, EyeOff } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,106 +16,90 @@ const Login = () => {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-    // Simulate login delay
     setTimeout(() => {
-      if (userType === "patient") {
-        navigate("/dashboard/patient");
-      } else {
-        navigate("/dashboard/doctor");
-      }
+      navigate(userType === "patient" ? "/dashboard/patient" : "/dashboard/doctor");
       setIsLoading(false);
     }, 1000);
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4 bg-pattern-leaves">
-      {/* Background Decorations */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/50" />
-      <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-primary/10 animate-float" />
-      <div className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-ayush-gold/10 animate-float" style={{ animationDelay: "2s" }} />
+    <div className="min-h-[100svh] bg-background flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-grid-pattern" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[500px] h-[400px] bg-glow opacity-50" />
 
-      <div className="w-full max-w-md relative z-10">
+      <div className="w-full max-w-sm sm:max-w-md relative z-10">
         {/* Logo */}
-        <Link to="/" className="flex items-center justify-center gap-2 mb-8">
-          <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center">
-            <Leaf className="w-6 h-6 text-primary-foreground" />
+        <Link to="/" className="flex items-center justify-center gap-2 mb-6 sm:mb-8">
+          <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-2xl bg-primary flex items-center justify-center">
+            <Sparkles className="w-5 sm:w-6 h-5 sm:h-6 text-primary-foreground" />
           </div>
-          <span className="text-2xl font-serif font-semibold text-foreground">
-            AyushGyan
+          <span className="text-xl sm:text-2xl font-display font-bold text-foreground">
+            AyushGyaan AI
           </span>
         </Link>
 
-        <Card className="shadow-elevated border-border">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-serif">Welcome Back</CardTitle>
-            <CardDescription>
+        <Card className="shadow-elevated border-border rounded-2xl">
+          <CardHeader className="text-center pb-4">
+            <CardTitle className="text-xl sm:text-2xl font-display">Welcome Back</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">
               Sign in to continue your wellness journey
             </CardDescription>
           </CardHeader>
           
           <CardContent>
             {/* User Type Toggle */}
-            <Tabs value={userType} onValueChange={(v) => setUserType(v as "patient" | "doctor")} className="mb-6">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="patient" className="flex items-center gap-2">
-                  <User className="w-4 h-4" />
+            <Tabs value={userType} onValueChange={(v) => setUserType(v as "patient" | "doctor")} className="mb-5 sm:mb-6">
+              <TabsList className="grid w-full grid-cols-2 rounded-xl h-10">
+                <TabsTrigger value="patient" className="flex items-center gap-2 rounded-lg text-xs sm:text-sm">
+                  <User className="w-3.5 h-3.5" />
                   Patient
                 </TabsTrigger>
-                <TabsTrigger value="doctor" className="flex items-center gap-2">
-                  <Stethoscope className="w-4 h-4" />
+                <TabsTrigger value="doctor" className="flex items-center gap-2 rounded-lg text-xs sm:text-sm">
+                  <Stethoscope className="w-3.5 h-3.5" />
                   Doctor
                 </TabsTrigger>
               </TabsList>
             </Tabs>
 
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+            <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4">
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="email" className="text-xs sm:text-sm">Email</Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input 
-                    id="email" 
-                    type="email" 
-                    placeholder="you@example.com" 
-                    className="pl-10"
+                    id="email" type="email" placeholder="you@example.com" 
+                    className="pl-10 rounded-xl h-10 sm:h-11 text-sm"
                     defaultValue={userType === "patient" ? "patient@demo.com" : "doctor@demo.com"}
                   />
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+              <div className="space-y-1.5 sm:space-y-2">
+                <Label htmlFor="password" className="text-xs sm:text-sm">Password</Label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input 
-                    id="password" 
-                    type={showPassword ? "text" : "password"} 
-                    placeholder="••••••••" 
-                    className="pl-10 pr-10"
+                    id="password" type={showPassword ? "text" : "password"} placeholder="••••••••" 
+                    className="pl-10 pr-10 rounded-xl h-10 sm:h-11 text-sm"
                     defaultValue="demo123"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                  >
+                  <button type="button" onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 text-sm">
+                <label className="flex items-center gap-2 text-xs sm:text-sm">
                   <input type="checkbox" className="rounded border-border" />
                   <span className="text-muted-foreground">Remember me</span>
                 </label>
-                <a href="#" className="text-sm text-primary hover:underline">
-                  Forgot password?
-                </a>
+                <a href="#" className="text-xs sm:text-sm text-primary hover:underline">Forgot password?</a>
               </div>
 
-              <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+              <Button type="submit" className="w-full rounded-xl h-10 sm:h-11 text-sm" size="lg" disabled={isLoading}>
                 {isLoading ? (
                   <span className="flex items-center gap-2">
                     <div className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
@@ -128,19 +111,16 @@ const Login = () => {
               </Button>
             </form>
 
-            <div className="mt-6 text-center">
-              <p className="text-sm text-muted-foreground">
+            <div className="mt-5 sm:mt-6 text-center">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <a href="#" className="text-primary hover:underline font-medium">
-                  Sign up
-                </a>
+                <a href="#" className="text-primary hover:underline font-medium">Sign up</a>
               </p>
             </div>
 
-            {/* Demo Notice */}
-            <div className="mt-6 p-3 bg-muted rounded-lg">
-              <p className="text-xs text-center text-muted-foreground">
-                🎭 <strong>Demo Mode:</strong> Click "Sign in" with any credentials to explore the dashboard
+            <div className="mt-4 sm:mt-6 p-3 bg-accent/50 rounded-xl">
+              <p className="text-[10px] sm:text-xs text-center text-muted-foreground">
+                🎭 <strong>Demo Mode:</strong> Click "Sign in" with any credentials to explore
               </p>
             </div>
           </CardContent>
