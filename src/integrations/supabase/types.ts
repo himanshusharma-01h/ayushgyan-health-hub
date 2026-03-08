@@ -106,6 +106,183 @@ export type Database = {
         }
         Relationships: []
       }
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          price: number
+          product_id: string | null
+          product_name: string
+          quantity: number
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          price: number
+          product_id?: string | null
+          product_name: string
+          quantity?: number
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          price?: number
+          product_id?: string | null
+          product_name?: string
+          quantity?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          id: string
+          payment_id: string | null
+          shipping_address: string
+          shipping_email: string
+          shipping_name: string
+          shipping_phone: string | null
+          status: string
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          payment_id?: string | null
+          shipping_address: string
+          shipping_email: string
+          shipping_name: string
+          shipping_phone?: string | null
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          payment_id?: string | null
+          shipping_address?: string
+          shipping_email?: string
+          shipping_name?: string
+          shipping_phone?: string | null
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          benefits: string[] | null
+          category: string
+          created_at: string
+          description: string
+          description_hi: string | null
+          dosha_compatibility: string[] | null
+          id: string
+          image_emoji: string | null
+          image_url: string | null
+          in_stock: boolean
+          is_published: boolean
+          name: string
+          name_hi: string | null
+          original_price: number | null
+          price: number
+          rating: number | null
+          reviews_count: number | null
+          updated_at: string
+        }
+        Insert: {
+          benefits?: string[] | null
+          category?: string
+          created_at?: string
+          description: string
+          description_hi?: string | null
+          dosha_compatibility?: string[] | null
+          id?: string
+          image_emoji?: string | null
+          image_url?: string | null
+          in_stock?: boolean
+          is_published?: boolean
+          name: string
+          name_hi?: string | null
+          original_price?: number | null
+          price?: number
+          rating?: number | null
+          reviews_count?: number | null
+          updated_at?: string
+        }
+        Update: {
+          benefits?: string[] | null
+          category?: string
+          created_at?: string
+          description?: string
+          description_hi?: string | null
+          dosha_compatibility?: string[] | null
+          id?: string
+          image_emoji?: string | null
+          image_url?: string | null
+          in_stock?: boolean
+          is_published?: boolean
+          name?: string
+          name_hi?: string | null
+          original_price?: number | null
+          price?: number
+          rating?: number | null
+          reviews_count?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          full_name: string
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       symptom_checks: {
         Row: {
           ai_response: string | null
@@ -145,15 +322,84 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      vaidya_advice: {
+        Row: {
+          category: string
+          created_at: string
+          description: string
+          description_hi: string | null
+          doctor_avatar: string | null
+          doctor_name: string
+          id: string
+          image_url: string | null
+          is_published: boolean
+          title: string
+          title_hi: string | null
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          description: string
+          description_hi?: string | null
+          doctor_avatar?: string | null
+          doctor_name: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          title: string
+          title_hi?: string | null
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          description?: string
+          description_hi?: string | null
+          doctor_avatar?: string | null
+          doctor_name?: string
+          id?: string
+          image_url?: string | null
+          is_published?: boolean
+          title?: string
+          title_hi?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user" | "doctor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -280,6 +526,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user", "doctor"],
+    },
   },
 } as const
