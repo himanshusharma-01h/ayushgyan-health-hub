@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Sparkles, ShieldCheck, Leaf, Heart, FlaskConical,
-  Bell, CheckCircle2, ArrowRight
+  Bell, CheckCircle2, ArrowRight, ArrowLeft
 } from "lucide-react";
 
 const placeholderProducts = [
@@ -67,6 +68,14 @@ const Products = () => {
       <Navbar />
 
       <main className="pt-16">
+        <div className="max-w-7xl mx-auto px-4 pt-4">
+          <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground" asChild>
+            <Link to="/">
+              <ArrowLeft className="w-4 h-4" />
+              Back
+            </Link>
+          </Button>
+        </div>
         {/* Hero */}
         <section className="relative py-16 sm:py-24 overflow-hidden">
           <div className="absolute inset-0 bg-grid-pattern" />
