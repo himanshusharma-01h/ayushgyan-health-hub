@@ -40,10 +40,29 @@ const PrakritiQuiz = () => {
     setAnswers({ ...answers, [currentQuestion]: dosha });
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
+      // Calculate and save before showing
+      const counts = { vata: 0, pitta: 0, kapha: 0 };
+      const allAnswers = { ...answers, [currentQuestion]: answers[currentQuestion] };
+      Object.values(allAnswers).forEach((dosha) => { if (dosha) counts[dosha]++; });
+      const total = Object.keys(allAnswers).length || 1;
+      const vata = Math.round((counts.vata / total) * 100);
+      const pitta = Math.round((counts.pitta / total) * 100);
+      const kapha = Math.round((counts.kapha / total) * 100);
+      const sorted = Object.entries({ vata, pitta, kapha }).sort((a, b) => b[1] - a[1]);
+      let primary = sorted[0][0].charAt(0).toUpperCase() + sorted[0][0].slice(1);
+      if (sorted[0][1] - sorted[1][1] < 15) {
+        primary = `${primary}-${sorted[1][0].charAt(0).toUpperCase() + sorted[1][0].slice(1)}`;
+      }
+      const error = await savePrakriti(vata, pitta, kapha, primary);
+      if (error) {
+        toast({ title: "Could not save", description: error.message, variant: "destructive" });
+      } else {
+        toast({ title: "Prakriti saved!", description: `Your Prakriti is ${primary}` });
+      }
       setShowResults(true);
     }
   };
