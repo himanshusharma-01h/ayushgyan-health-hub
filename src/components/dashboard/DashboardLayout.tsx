@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import DashboardSidebar from "./DashboardSidebar";
+import MobileBottomNav from "./MobileBottomNav";
 import { Bell } from "lucide-react";
 
 interface DashboardLayoutProps {
@@ -20,11 +21,11 @@ const DashboardLayout = ({
       <DashboardSidebar userName={userName} userPrakriti={userPrakriti} />
       
       {/* Main Content */}
-      <div className="ml-64">
+      <div className="md:ml-64">
         {/* Top Bar */}
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border">
-          <div className="flex items-center justify-between h-16 px-8">
-            <h1 className="text-xl font-serif font-semibold text-foreground">
+          <div className="flex items-center justify-between h-14 md:h-16 px-4 md:px-8">
+            <h1 className="text-lg md:text-xl font-serif font-semibold text-foreground">
               {pageTitle}
             </h1>
             <button className="relative p-2 text-muted-foreground hover:text-foreground rounded-lg hover:bg-secondary transition-colors">
@@ -35,10 +36,13 @@ const DashboardLayout = ({
         </header>
 
         {/* Page Content */}
-        <main className="p-8">
+        <main className="p-4 md:p-8 pb-20 md:pb-8">
           {children}
         </main>
       </div>
+
+      {/* Mobile Bottom Nav */}
+      <MobileBottomNav />
     </div>
   );
 };
