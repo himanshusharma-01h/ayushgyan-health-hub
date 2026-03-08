@@ -40,7 +40,7 @@ const DashboardSidebar = ({ userName, userPrakriti }: DashboardSidebarProps) => 
         <Link to="/" className="flex items-center gap-3">
           <img src={logo} alt="AyushGyan Logo" className="w-10 h-10 rounded-full object-cover" />
           <span className="text-xl font-serif font-semibold text-foreground">
-            AyushGyan
+            AyushGyaan
           </span>
         </Link>
       </div>
