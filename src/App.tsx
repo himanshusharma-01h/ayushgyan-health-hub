@@ -4,6 +4,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import PatientDashboard from "./pages/dashboard/PatientDashboard";
@@ -17,6 +19,10 @@ import Appointments from "./pages/dashboard/Appointments";
 import SymptomsChecker from "./pages/dashboard/SymptomsChecker";
 import Chat from "./pages/Chat";
 import Products from "./pages/Products";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminProducts from "./pages/admin/AdminProducts";
+import AdminAdvice from "./pages/admin/AdminAdvice";
+import AdminUsers from "./pages/admin/AdminUsers";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,29 +30,34 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/dashboard/patient" element={<PatientDashboard />} />
-            <Route path="/dashboard/patient/prakriti" element={<PrakritiQuiz />} />
-            <Route path="/dashboard/patient/rituals" element={<DailyRituals />} />
-            <Route path="/dashboard/patient/appointments" element={<Appointments />} />
-            <Route path="/dashboard/patient/symptoms" element={<SymptomsChecker />} />
-            <Route path="/dashboard/doctor" element={<DoctorDashboard />} />
-            <Route path="/dashboard/doctor/patients" element={<DoctorPatients />} />
-            <Route path="/dashboard/doctor/appointments" element={<DoctorAppointments />} />
-            <Route path="/dashboard/doctor/prescriptions" element={<DoctorPrescriptions />} />
-            <Route path="/chat" element={<Chat />} />
-            <Route path="/products" element={<Products />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard/patient" element={<ProtectedRoute><PatientDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/patient/prakriti" element={<ProtectedRoute><PrakritiQuiz /></ProtectedRoute>} />
+              <Route path="/dashboard/patient/rituals" element={<ProtectedRoute><DailyRituals /></ProtectedRoute>} />
+              <Route path="/dashboard/patient/appointments" element={<ProtectedRoute><Appointments /></ProtectedRoute>} />
+              <Route path="/dashboard/patient/symptoms" element={<ProtectedRoute><SymptomsChecker /></ProtectedRoute>} />
+              <Route path="/dashboard/doctor" element={<ProtectedRoute><DoctorDashboard /></ProtectedRoute>} />
+              <Route path="/dashboard/doctor/patients" element={<ProtectedRoute><DoctorPatients /></ProtectedRoute>} />
+              <Route path="/dashboard/doctor/appointments" element={<ProtectedRoute><DoctorAppointments /></ProtectedRoute>} />
+              <Route path="/dashboard/doctor/prescriptions" element={<ProtectedRoute><DoctorPrescriptions /></ProtectedRoute>} />
+              <Route path="/chat" element={<Chat />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/admin" element={<ProtectedRoute requireAdmin><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/products" element={<ProtectedRoute requireAdmin><AdminProducts /></ProtectedRoute>} />
+              <Route path="/admin/advice" element={<ProtectedRoute requireAdmin><AdminAdvice /></ProtectedRoute>} />
+              <Route path="/admin/users" element={<ProtectedRoute requireAdmin><AdminUsers /></ProtectedRoute>} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </AuthProvider>
     </LanguageProvider>
   </QueryClientProvider>
 );
