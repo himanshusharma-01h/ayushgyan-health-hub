@@ -163,6 +163,7 @@ const remedyDatabase: Record<string, {
 const SymptomsChecker = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { profile } = useAuth();
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [dominantDosha, setDominantDosha] = useState<string | null>(null);
