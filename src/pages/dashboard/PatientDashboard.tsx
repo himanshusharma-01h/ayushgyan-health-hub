@@ -56,13 +56,15 @@ const doshaChartData = [
 ];
 
 const PatientDashboard = () => {
+  const { profile } = useAuth();
+  const userName = profile?.full_name || "User";
   const ritualsProgress = Math.round(
     (mockPatientData.ritualsCompleted / mockPatientData.ritualsTotal) * 100
   );
 
   return (
     <DashboardLayout 
-      userName={mockPatientData.name} 
+      userName={userName} 
       userPrakriti={mockPatientData.prakriti}
       pageTitle="Dashboard"
     >
