@@ -25,7 +25,7 @@ export function usePrakritiResult() {
       setResult(data);
       setLoading(false);
     };
-    fetch();
+    fetchData();
   }, [user]);
 
   const save = async (vata: number, pitta: number, kapha: number, primaryDosha: string) => {
