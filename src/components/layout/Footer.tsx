@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Sparkles, Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter } from "lucide-react";
+import logo from "@/assets/logo.jpeg";
 
 const Footer = () => {
   const footerLinks = {
