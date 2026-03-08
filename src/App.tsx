@@ -18,6 +18,7 @@ import DailyRituals from "./pages/dashboard/DailyRituals";
 import Appointments from "./pages/dashboard/Appointments";
 import SymptomsChecker from "./pages/dashboard/SymptomsChecker";
 import UserProfile from "./pages/dashboard/UserProfile";
+import SettingsPage from "./pages/dashboard/SettingsPage";
 import Chat from "./pages/Chat";
 import Products from "./pages/Products";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -46,6 +47,7 @@ const App = () => (
               <Route path="/dashboard/patient/appointments" element={<ProtectedRoute><Appointments /></ProtectedRoute>} />
               <Route path="/dashboard/patient/symptoms" element={<ProtectedRoute><SymptomsChecker /></ProtectedRoute>} />
               <Route path="/dashboard/patient/profile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+              <Route path="/dashboard/patient/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
               <Route path="/dashboard/doctor" element={<ProtectedRoute><DoctorDashboard /></ProtectedRoute>} />
               <Route path="/dashboard/doctor/patients" element={<ProtectedRoute><DoctorPatients /></ProtectedRoute>} />
               <Route path="/dashboard/doctor/appointments" element={<ProtectedRoute><DoctorAppointments /></ProtectedRoute>} />

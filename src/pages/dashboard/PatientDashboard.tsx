@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePrakritiResult } from "@/hooks/usePrakritiResult";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,6 +59,7 @@ const doshaChartData = [
 
 const PatientDashboard = () => {
   const { profile } = useAuth();
+  const { result: prakriti } = usePrakritiResult();
   const userName = profile?.full_name || "User";
   const ritualsProgress = Math.round(
     (mockPatientData.ritualsCompleted / mockPatientData.ritualsTotal) * 100
@@ -66,7 +68,7 @@ const PatientDashboard = () => {
   return (
     <DashboardLayout 
       userName={userName} 
-      userPrakriti={mockPatientData.prakriti}
+      userPrakriti={prakriti?.primary_dosha || mockPatientData.prakriti}
       pageTitle="Dashboard"
     >
       {/* Welcome Section */}

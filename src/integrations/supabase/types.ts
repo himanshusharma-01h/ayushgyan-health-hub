@@ -208,6 +208,36 @@ export type Database = {
         }
         Relationships: []
       }
+      prakriti_results: {
+        Row: {
+          created_at: string
+          id: string
+          kapha_score: number
+          pitta_score: number
+          primary_dosha: string
+          user_id: string
+          vata_score: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kapha_score?: number
+          pitta_score?: number
+          primary_dosha: string
+          user_id: string
+          vata_score?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kapha_score?: number
+          pitta_score?: number
+          primary_dosha?: string
+          user_id?: string
+          vata_score?: number
+        }
+        Relationships: []
+      }
       products: {
         Row: {
           benefits: string[] | null

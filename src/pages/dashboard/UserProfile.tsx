@@ -5,29 +5,29 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { usePrakritiResult } from "@/hooks/usePrakritiResult";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
-  User, Edit, MapPin, Heart, Activity, Award,
-  Calendar, MessageCircle, ShoppingBag, Sparkles, LogOut
+  User, Edit, Heart, Activity, Award,
+  Calendar, MessageCircle, ShoppingBag, Sparkles, LogOut, Settings
 } from "lucide-react";
 
 const UserProfile = () => {
   const { user, profile, signOut } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { result: prakriti, loading: prakritiLoading } = usePrakritiResult();
 
   const [editOpen, setEditOpen] = useState(false);
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
 
-  // Mock data for demonstration (would come from DB in production)
-  const prakritiType = "Vata-Pitta";
+  const prakritiType = prakriti?.primary_dosha || "Not assessed";
   const memberSince = user?.created_at ? new Date(user.created_at).toLocaleDateString("en-IN", { month: "long", year: "numeric" }) : "–";
 
   const activityStats = [
@@ -238,20 +238,24 @@ const UserProfile = () => {
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-foreground mb-1">{prakritiType}</h3>
                 <p className="text-sm text-muted-foreground mb-4">Your dominant Dosha constitution</p>
-                <div className="flex justify-center gap-3">
-                  <div className="text-center px-4 py-2 rounded-xl bg-blue-500/10">
-                    <p className="text-lg font-bold text-blue-600">45%</p>
-                    <p className="text-xs text-muted-foreground">Vata</p>
+                {prakriti ? (
+                  <div className="flex justify-center gap-3">
+                    <div className="text-center px-4 py-2 rounded-xl bg-blue-500/10">
+                      <p className="text-lg font-bold text-blue-600">{prakriti.vata_score}%</p>
+                      <p className="text-xs text-muted-foreground">Vata</p>
+                    </div>
+                    <div className="text-center px-4 py-2 rounded-xl bg-orange-500/10">
+                      <p className="text-lg font-bold text-orange-600">{prakriti.pitta_score}%</p>
+                      <p className="text-xs text-muted-foreground">Pitta</p>
+                    </div>
+                    <div className="text-center px-4 py-2 rounded-xl bg-green-500/10">
+                      <p className="text-lg font-bold text-green-600">{prakriti.kapha_score}%</p>
+                      <p className="text-xs text-muted-foreground">Kapha</p>
+                    </div>
                   </div>
-                  <div className="text-center px-4 py-2 rounded-xl bg-orange-500/10">
-                    <p className="text-lg font-bold text-orange-600">35%</p>
-                    <p className="text-xs text-muted-foreground">Pitta</p>
-                  </div>
-                  <div className="text-center px-4 py-2 rounded-xl bg-green-500/10">
-                    <p className="text-lg font-bold text-green-600">20%</p>
-                    <p className="text-xs text-muted-foreground">Kapha</p>
-                  </div>
-                </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">Take the Prakriti quiz to see your results</p>
+                )}
               </div>
               <Button variant="outline" className="w-full rounded-xl mt-2" onClick={() => navigate("/dashboard/patient/prakriti")}>
                 Retake Prakriti Quiz
