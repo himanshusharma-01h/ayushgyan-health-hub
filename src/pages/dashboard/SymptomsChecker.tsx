@@ -333,13 +333,14 @@ const SymptomsChecker = () => {
                   </div>
                 </ScrollArea>
 
-                <div className="mt-6 flex items-center justify-between">
+                <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                   <p className="text-sm text-muted-foreground">
                     {selectedSymptoms.length} symptom(s) selected
                   </p>
-                  <div className="flex gap-3">
+                  <div className="flex gap-3 w-full sm:w-auto">
                     <Button
                       variant="outline"
+                      className="flex-1 sm:flex-initial"
                       onClick={() => {
                         setSelectedSymptoms([]);
                         setShowResults(false);
@@ -351,7 +352,7 @@ const SymptomsChecker = () => {
                     <Button
                       onClick={analyzeSymptoms}
                       disabled={selectedSymptoms.length === 0}
-                      className="gap-2"
+                      className="gap-2 flex-1 sm:flex-initial"
                     >
                       <Sparkles className="h-4 w-4" />
                       Analyze Symptoms
