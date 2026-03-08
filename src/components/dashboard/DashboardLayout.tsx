@@ -1,7 +1,8 @@
 import { ReactNode, useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import DashboardSidebar from "./DashboardSidebar";
 import MobileBottomNav from "./MobileBottomNav";
-import { Bell, Check } from "lucide-react";
+import { Bell, Check, Settings } from "lucide-react";
 import { useNotifications } from "@/hooks/useNotifications";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
