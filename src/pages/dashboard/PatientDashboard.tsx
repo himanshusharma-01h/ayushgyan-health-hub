@@ -68,7 +68,7 @@ const PatientDashboard = () => {
   return (
     <DashboardLayout 
       userName={userName} 
-      userPrakriti={mockPatientData.prakriti}
+      userPrakriti={prakriti?.primary_dosha || mockPatientData.prakriti}
       pageTitle="Dashboard"
     >
       {/* Welcome Section */}

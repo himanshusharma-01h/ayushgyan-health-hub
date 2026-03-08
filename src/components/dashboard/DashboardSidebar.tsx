@@ -91,7 +91,7 @@ const DashboardSidebar = ({ userName, userPrakriti }: DashboardSidebarProps) => 
       {/* Bottom Actions */}
       <div className="p-4 border-t border-border space-y-2">
         <Link
-          to="#"
+          to="/dashboard/patient/settings"
           className="flex items-center gap-3 px-4 py-3 rounded-lg text-muted-foreground hover:bg-secondary hover:text-foreground transition-all"
         >
           <Settings className="w-5 h-5" />
