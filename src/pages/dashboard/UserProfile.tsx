@@ -429,16 +429,20 @@ const UserProfile = () => {
               <CardTitle className="text-lg flex items-center gap-2"><Heart className="w-5 h-5 text-primary" /> Health Goals</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {healthGoals.map((goal, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm">🎯</span>
+              {healthGoals.length > 0 ? (
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {healthGoals.map((goal, i) => (
+                    <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-secondary/50">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <span className="text-sm">🎯</span>
+                      </div>
+                      <span className="text-sm font-medium text-foreground">{goal}</span>
                     </div>
-                    <span className="text-sm font-medium text-foreground">{goal}</span>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">No health goals set yet. Edit your profile to add goals!</p>
+              )}
             </CardContent>
           </Card>
         </div>
