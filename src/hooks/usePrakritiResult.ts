@@ -37,10 +37,11 @@ export function usePrakritiResult() {
       kapha_score: kapha,
       primary_dosha: primaryDosha,
     };
-    // Upsert
-    const { error } = await supabase
+    console.log("Saving prakriti payload:", payload);
+    const { error, data } = await supabase
       .from("prakriti_results")
       .upsert(payload, { onConflict: "user_id" });
+    console.log("Prakriti save result:", { error, data });
     if (!error) setResult(payload);
     return error;
   };
