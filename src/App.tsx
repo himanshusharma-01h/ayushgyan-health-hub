@@ -18,6 +18,7 @@ import DailyRituals from "./pages/dashboard/DailyRituals";
 import Appointments from "./pages/dashboard/Appointments";
 import SymptomsChecker from "./pages/dashboard/SymptomsChecker";
 import UserProfile from "./pages/dashboard/UserProfile";
+import SettingsPage from "./pages/dashboard/SettingsPage";
 import Chat from "./pages/Chat";
 import Products from "./pages/Products";
 import AdminDashboard from "./pages/admin/AdminDashboard";
