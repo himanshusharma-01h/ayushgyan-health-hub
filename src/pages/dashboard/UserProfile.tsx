@@ -26,6 +26,9 @@ const UserProfile = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [fullName, setFullName] = useState(profile?.full_name || "");
   const [phone, setPhone] = useState("");
+  const [age, setAge] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
+  const [healthGoals, setHealthGoals] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
 
   // Activity counts
