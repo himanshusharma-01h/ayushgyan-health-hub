@@ -1,4 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
+import logo from "@/assets/logo.jpeg";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -37,9 +38,7 @@ const DashboardSidebar = ({ userName, userPrakriti }: DashboardSidebarProps) => 
       {/* Logo */}
       <div className="p-6 border-b border-border">
         <Link to="/" className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-            <Leaf className="w-5 h-5 text-primary-foreground" />
-          </div>
+          <img src={logo} alt="AyushGyan Logo" className="w-10 h-10 rounded-full object-cover" />
           <span className="text-xl font-serif font-semibold text-foreground">
             AyushGyan
           </span>
