@@ -64,6 +64,9 @@ const Navbar = () => {
                 <Button variant="ghost" size="sm" asChild>
                   <Link to="/login">{t('nav.login')}</Link>
                 </Button>
+                <Button size="sm" variant="outline" className="rounded-full px-4" asChild>
+                  <Link to="/login?tab=signup">Sign Up</Link>
+                </Button>
                 <Button size="sm" className="rounded-full px-4 sm:px-5" asChild>
                   <Link to="/chat">
                     <Sparkles className="w-3.5 h-3.5 mr-1.5" />
