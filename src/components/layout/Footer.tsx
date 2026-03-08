@@ -22,7 +22,7 @@ const Footer = () => {
     ],
     Contact: [
       { name: "📞 9672095978", href: "tel:9672095978" },
-      { name: "✉️ support@ayushgyaan.ai", href: "mailto:support@ayushgyaan.ai" },
+      { name: "✉️ aayushgyan.01@gmail.com", href: "mailto:aayushgyan.01@gmail.com" },
     ],
   };
 
