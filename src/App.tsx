@@ -20,6 +20,7 @@ import SymptomsChecker from "./pages/dashboard/SymptomsChecker";
 import UserProfile from "./pages/dashboard/UserProfile";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import DoctorPortal from "./pages/dashboard/DoctorPortal";
+import Feedback from "./pages/dashboard/Feedback";
 import Chat from "./pages/Chat";
 import Products from "./pages/Products";
 import AdminDashboard from "./pages/admin/AdminDashboard";
