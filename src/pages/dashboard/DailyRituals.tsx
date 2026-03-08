@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -94,6 +95,7 @@ const initialRituals: Ritual[] = [
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 const DailyRituals = () => {
+  const { profile } = useAuth();
   const [rituals, setRituals] = useState<Ritual[]>(initialRituals);
   const [selectedDay, setSelectedDay] = useState(new Date().getDay());
 
@@ -113,7 +115,7 @@ const DailyRituals = () => {
 
   return (
     <DashboardLayout 
-      userName="Priya Sharma" 
+      userName={profile?.full_name || "User"} 
       userPrakriti="Vata-Pitta"
       pageTitle="Daily Rituals (Dinacharya)"
     >

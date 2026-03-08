@@ -17,6 +17,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface Doctor {
   id: string;
@@ -65,6 +66,7 @@ const Appointments = () => {
 
   const { initiatePayment, isLoading: paymentLoading } = useRazorpay();
   const { t } = useLanguage();
+  const { profile } = useAuth();
 
   useEffect(() => {
     fetchDoctors();
@@ -177,7 +179,7 @@ const Appointments = () => {
 
   return (
     <DashboardLayout 
-      userName="Priya Sharma" 
+      userName={profile?.full_name || "User"} 
       userPrakriti="Vata-Pitta"
       pageTitle={t('payment.bookAppointment')}
     >

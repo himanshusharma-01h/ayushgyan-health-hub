@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -13,6 +14,7 @@ type DoshaType = "vata" | "pitta" | "kapha";
 const PrakritiQuiz = () => {
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { profile } = useAuth();
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<Record<number, DoshaType>>({});
   const [showResults, setShowResults] = useState(false);
@@ -71,7 +73,7 @@ const PrakritiQuiz = () => {
     const primaryDosha = getPrimaryDosha();
 
     return (
-      <DashboardLayout userName="Priya Sharma" userPrakriti={primaryDosha} pageTitle={t('prakriti.resultsTitle')}>
+      <DashboardLayout userName={profile?.full_name || "User"} userPrakriti={primaryDosha} pageTitle={t('prakriti.resultsTitle')}>
         <div className="max-w-3xl mx-auto">
           <Card className="overflow-hidden rounded-2xl">
             <div className="bg-gradient-to-r from-primary/20 via-accent/20 to-ayush-gold/20 p-6 sm:p-8 text-center">
@@ -126,7 +128,7 @@ const PrakritiQuiz = () => {
   const question = questions[currentQuestion];
 
   return (
-    <DashboardLayout userName="Priya Sharma" pageTitle={t('prakriti.pageTitle')}>
+    <DashboardLayout userName={profile?.full_name || "User"} pageTitle={t('prakriti.pageTitle')}>
       <div className="max-w-3xl mx-auto">
         <div className="mb-6 sm:mb-8">
           <div className="flex justify-between items-center mb-2">

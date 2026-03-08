@@ -13,6 +13,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Search, Leaf, ShoppingCart, AlertCircle, Sparkles, MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const symptomCategories = {
   digestive: {
@@ -162,6 +163,7 @@ const remedyDatabase: Record<string, {
 const SymptomsChecker = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { profile } = useAuth();
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [dominantDosha, setDominantDosha] = useState<string | null>(null);
@@ -278,7 +280,7 @@ const SymptomsChecker = () => {
   const remedies = dominantDosha ? remedyDatabase[dominantDosha] : null;
 
   return (
-    <DashboardLayout userName="Patient">
+    <DashboardLayout userName={profile?.full_name || "User"} userPrakriti="Vata-Pitta" pageTitle="Symptoms Checker">
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-foreground">Symptoms Checker</h1>

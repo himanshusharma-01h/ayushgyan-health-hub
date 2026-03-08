@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import DashboardLayout from "@/components/dashboard/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -56,20 +57,22 @@ const doshaChartData = [
 ];
 
 const PatientDashboard = () => {
+  const { profile } = useAuth();
+  const userName = profile?.full_name || "User";
   const ritualsProgress = Math.round(
     (mockPatientData.ritualsCompleted / mockPatientData.ritualsTotal) * 100
   );
 
   return (
     <DashboardLayout 
-      userName={mockPatientData.name} 
+      userName={userName} 
       userPrakriti={mockPatientData.prakriti}
       pageTitle="Dashboard"
     >
       {/* Welcome Section */}
       <div className="mb-8">
         <h2 className="text-2xl font-serif font-bold text-foreground mb-2">
-          Namaste, {mockPatientData.name.split(" ")[0]}! 🙏
+          Namaste, {userName.split(" ")[0]}! 🙏
         </h2>
         <p className="text-muted-foreground">
           Continue your Ayurvedic wellness journey. Today's ritual progress: {ritualsProgress}%
