@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import DoctorSidebar from "./DoctorSidebar";
+import DoctorBottomNav from "./DoctorBottomNav";
 import { Bell } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 
@@ -25,18 +26,17 @@ const DoctorLayout = ({
       <DoctorSidebar doctorName={doctorName} specialization={specialization} />
       
       {/* Main Content */}
-      <div className="ml-64">
+      <div className="md:ml-64">
         {/* Top Bar */}
         <header className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border">
-          <div className="flex items-center justify-between h-16 px-8">
-            <h1 className="text-xl font-serif font-semibold text-foreground">
+          <div className="flex items-center justify-between h-14 md:h-16 px-4 md:px-8">
+            <h1 className="text-lg md:text-xl font-serif font-semibold text-foreground">
               {pageTitle}
             </h1>
-            <div className="flex items-center gap-6">
-              {/* Online Status */}
+            <div className="flex items-center gap-3 md:gap-6">
               {onOnlineChange && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">
+                  <span className="text-xs md:text-sm text-muted-foreground">
                     {isOnline ? "Online" : "Offline"}
                   </span>
                   <Switch 
@@ -55,10 +55,13 @@ const DoctorLayout = ({
         </header>
 
         {/* Page Content */}
-        <main className="p-8">
+        <main className="p-4 md:p-8 pb-20 md:pb-8">
           {children}
         </main>
       </div>
+
+      {/* Mobile Bottom Nav */}
+      <DoctorBottomNav />
     </div>
   );
 };
