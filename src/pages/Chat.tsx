@@ -238,6 +238,9 @@ const Chat = () => {
     { id: "2", title: language === 'hi' ? "तनाव प्रबंधन" : "Stress Management", preview: language === 'hi' ? "तनाव महसूस कर रहा..." : "Feeling stressed...", date: language === 'hi' ? "कल" : "Yesterday" },
   ];
 
+  if (authLoading) return null;
+  if (!user) return <Navigate to="/login" replace />;
+
   return (
     <div className="h-[100svh] flex bg-background">
       {/* Sidebar */}
