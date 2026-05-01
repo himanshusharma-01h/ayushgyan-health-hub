@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, Navigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import LanguageToggle from "@/components/LanguageToggle";
 import { 
   Leaf, Send, Mic, MicOff, Plus, Menu, X, User, Sparkles, ArrowLeft
@@ -23,6 +25,7 @@ const Chat = () => {
   const { toast } = useToast();
   const location = useLocation();
   const { language, t } = useLanguage();
+  const { user, loading: authLoading } = useAuth();
   
   const getWelcomeMessage = (): Message => ({
     id: "welcome",
@@ -74,11 +77,14 @@ const Chat = () => {
   }, [location.state, hasProcessedSymptoms]);
 
   const streamChatWithMessages = async (userMessages: { role: string; content: string }[]) => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) throw new Error("Please sign in to use the AI Vaidya chat.");
+
     const resp = await fetch(CHAT_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        Authorization: `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({ messages: userMessages, language }),
     });
@@ -231,6 +237,9 @@ const Chat = () => {
     { id: "1", title: language === 'hi' ? "पाचन स्वास्थ्य" : "Digestive Health", preview: language === 'hi' ? "सबसे अच्छी जड़ी-बूटियाँ..." : "Best herbs for...", date: language === 'hi' ? "आज" : "Today" },
     { id: "2", title: language === 'hi' ? "तनाव प्रबंधन" : "Stress Management", preview: language === 'hi' ? "तनाव महसूस कर रहा..." : "Feeling stressed...", date: language === 'hi' ? "कल" : "Yesterday" },
   ];
+
+  if (authLoading) return null;
+  if (!user) return <Navigate to="/login" replace />;
 
   return (
     <div className="h-[100svh] flex bg-background">

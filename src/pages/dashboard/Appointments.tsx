@@ -66,7 +66,7 @@ const Appointments = () => {
 
   const { initiatePayment, isLoading: paymentLoading } = useRazorpay();
   const { t } = useLanguage();
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
 
   useEffect(() => {
     fetchDoctors();
@@ -104,6 +104,23 @@ const Appointments = () => {
       toast({ title: "Missing fields", description: "Please fill in all required fields", variant: "destructive" });
       return;
     }
+    if (!user) {
+      toast({ title: "Login required", description: "Please sign in to book an appointment.", variant: "destructive" });
+      return;
+    }
+    // Basic validation
+    if (patientName.trim().length < 2 || patientName.length > 100) {
+      toast({ title: "Invalid name", description: "Name must be 2-100 characters.", variant: "destructive" });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(patientEmail) || patientEmail.length > 255) {
+      toast({ title: "Invalid email", description: "Please enter a valid email.", variant: "destructive" });
+      return;
+    }
+    if (reason && reason.length > 1000) {
+      toast({ title: "Reason too long", description: "Please keep under 1000 characters.", variant: "destructive" });
+      return;
+    }
 
     setLoading(true);
     
@@ -111,9 +128,10 @@ const Appointments = () => {
     const { data: appointmentData, error: appointmentError } = await supabase
       .from("appointments")
       .insert({
+        user_id: user.id,
         doctor_id: selectedDoctor.id,
-        patient_name: patientName,
-        patient_email: patientEmail,
+        patient_name: patientName.trim(),
+        patient_email: patientEmail.trim(),
         appointment_date: format(selectedDate, "yyyy-MM-dd"),
         appointment_time: selectedTime,
         reason: reason,
