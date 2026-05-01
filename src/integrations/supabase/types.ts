@@ -27,6 +27,7 @@ export type Database = {
           reason: string | null
           status: string
           updated_at: string
+          user_id: string | null
         }
         Insert: {
           appointment_date: string
@@ -40,6 +41,7 @@ export type Database = {
           reason?: string | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Update: {
           appointment_date?: string
@@ -53,6 +55,7 @@ export type Database = {
           reason?: string | null
           status?: string
           updated_at?: string
+          user_id?: string | null
         }
         Relationships: [
           {
@@ -436,6 +439,7 @@ export type Database = {
           patient_email: string
           patient_name: string
           symptoms: string[]
+          user_id: string | null
         }
         Insert: {
           ai_response?: string | null
@@ -448,6 +452,7 @@ export type Database = {
           patient_email: string
           patient_name: string
           symptoms: string[]
+          user_id?: string | null
         }
         Update: {
           ai_response?: string | null
@@ -460,6 +465,7 @@ export type Database = {
           patient_email?: string
           patient_name?: string
           symptoms?: string[]
+          user_id?: string | null
         }
         Relationships: []
       }
