@@ -163,7 +163,7 @@ const remedyDatabase: Record<string, {
 const SymptomsChecker = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const [selectedSymptoms, setSelectedSymptoms] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [dominantDosha, setDominantDosha] = useState<string | null>(null);
@@ -193,6 +193,18 @@ const SymptomsChecker = () => {
       });
       return;
     }
+    if (!user) {
+      toast({ title: "Login required", description: "Please sign in to save your symptoms.", variant: "destructive" });
+      return;
+    }
+    if (patientName.trim().length < 2 || patientName.length > 100) {
+      toast({ title: "Invalid name", description: "Name must be 2-100 characters.", variant: "destructive" });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(patientEmail) || patientEmail.length > 255) {
+      toast({ title: "Invalid email", description: "Please enter a valid email.", variant: "destructive" });
+      return;
+    }
 
     setIsSaving(true);
     const symptomLabels = getSelectedSymptomLabels();
@@ -201,8 +213,9 @@ const SymptomsChecker = () => {
     try {
       // Save to database
       const { error } = await supabase.from('symptom_checks').insert({
-        patient_name: patientName,
-        patient_email: patientEmail,
+        user_id: user.id,
+        patient_name: patientName.trim(),
+        patient_email: patientEmail.trim(),
         symptoms: symptomLabels,
         dominant_dosha: dominantDosha || 'unknown',
         herbs_recommended: remedies?.herbs.map(h => h.name) || [],
